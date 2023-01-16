@@ -5,6 +5,7 @@ import Dashboard from "@/views/Dashboard.vue";
 import PwdSetting from "@/views/PwdSetting.vue";
 import Transfer from "@/views/Transfer.vue";
 import OrderQuery from "@/views/OrderQuery.vue";
+import HisOrderQuery from "@/views/HisOrderQuery.vue";
 
 const routes = [
     {
@@ -32,6 +33,11 @@ const routes = [
                 path: '/orderQuery',
                 name: 'orderQuery',
                 component: OrderQuery,
+            },
+            {
+                path: '/hisOrderQuery',
+                name: 'hisOrderQuery',
+                component: HisOrderQuery,
             },
         ]
     },
