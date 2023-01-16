@@ -27,8 +27,8 @@
         <div class="pagination">
             <el-button size="small" round type="primary"
                        style="margin-left: 5px; float: right"
-                       icon="el-icon-refresh"
-                       @click="">刷新
+                       @click="">
+                <el-icon><Refresh /></el-icon>刷新
             </el-button>
 
             <el-config-provider :locale="zhCn">

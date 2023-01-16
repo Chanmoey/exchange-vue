@@ -30,8 +30,10 @@
         <div class="pagination">
             <el-button size="small" round type="primary"
                        style="margin-left: 5px; float: right"
-                       icon="el-icon-refresh"
                        @click="">
+                <el-icon>
+                    <Refresh/>
+                </el-icon>
                 刷新
             </el-button>
 
