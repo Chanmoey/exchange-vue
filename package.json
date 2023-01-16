@@ -1,0 +1,33 @@
+{
+  "name": "exchange-front",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.0.10",
+    "core-js": "^3.8.3",
+    "element-plus": "^2.2.28",
+    "mitt": "^3.0.0",
+    "vue": "^3.2.13",
+    "vue-bus": "^1.2.1",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-plugin-vuex": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "node-sass": "^8.0.0",
+    "sass-loader": "^13.2.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ]
+}
