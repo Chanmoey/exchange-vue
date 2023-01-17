@@ -4,26 +4,34 @@
             class="login-container"
             label-position="right"
             style="max-width: 300px"
+            :model="ruleFrom"
+            :rules="rules"
+            ref="ruleForm"
         >
             <h3 class="title">用户登录</h3>
-            <el-form-item label="账号">
-                <el-input type="text" placeholder="请输入账号" v-model="loginFrom.uid"/>
+            <el-form-item label="账号" prop="uid">
+                <el-input type="text" placeholder="请输入账号" v-model="ruleFrom.uid"/>
             </el-form-item>
-            <el-form-item label="密码">
-                <el-input type="password" placeholder="请输入密码" v-model="loginFrom.password"/>
+            <el-form-item label="密码" prop="uid">
+                <el-input type="password" placeholder="请输入密码" v-model="ruleFrom.password"/>
             </el-form-item>
             <el-row class="code-box">
                 <el-col :span="12">
-                    <el-form-item label="验证码">
-                        <el-input type="text" placeholder="请输入验证码" v-model="loginFrom.captcha"/>
+                    <el-form-item label="验证码" prop="uid">
+                        <el-input type="text"
+                                  placeholder="请输入验证码"
+                                  v-model="ruleFrom.captcha"
+                                  @keydown.enter.native="submitForm('ruleForm')"/>
                     </el-form-item>
                 </el-col>
-                <el-col span="12">
-                    <img class="code-img" src="https://cn.bing.com/th?id=OJ.KwiWqZv3yhfzQg&pid=MSNJVFeeds" alt=""/>
+                <el-col :span="12">
+                    <img @click="getCode" class="code-img" :src="codeImg"/>
                 </el-col>
             </el-row>
             <el-form-item>
-                <el-button style="width: 100%;" type="primary">登录</el-button>
+                <el-button :loading="loading" @click="submitForm('ruleForm')"
+                           style="width: 100%;" type="primary">登录
+                </el-button>
             </el-form-item>
         </el-form>
 
@@ -31,16 +39,71 @@
 </template>
 
 <script>
+
+import {getRequest, postRequest} from "@/api/axiosCommon";
+
 export default {
     name: "Login",
     data() {
         return {
-            loginFrom: {
+
+            // 提交表单
+            ruleFrom: {
                 uid: null,
                 password: null,
-                captcha: null
-            }
+                captcha: null,
+                captchaId: null,
+            },
+
+            // 验证码图片
+            codeImg: '',
+
+            // 表单校验规则
+            rules: {
+                uid: [{required: true, message: "请输入账号", trigger: 'blur'}],
+                password: [{required: true, message: "请输入密码", trigger: 'blur'}],
+                captcha: [{required: true, message: "请输入验证码", trigger: 'blur'}]
+            },
+
+            // 防止前端重复提交表单
+            loading: false
         }
+    },
+    methods: {
+        // 请求验证码
+        getCode() {
+            getRequest("/login/captcha").then(resp => {
+                if (resp) {
+                    console.log(resp)
+                    this.ruleFrom.captchaId = resp.data.id
+                    this.codeImg = resp.data.image
+                    console.log(this.codeImg)
+                }
+            })
+        },
+
+        // 提交登录表单
+        submitForm(formName) {
+            this.$refs[formName].validate(valid => {
+                if (valid) {
+                    this.loading = true
+                    postRequest('/login/login', this.ruleFrom).then(resp => {
+                        if (resp) {
+                            this.$message.success("登录成功")
+                            sessionStorage.setItem("uid", resp.data.uid)
+                            sessionStorage.setItem("token", resp.data.token)
+                            this.$router.replace('/home')
+                        }
+                    })
+                } else {
+                    this.$message.error("用户名/密码/验证码不能为空")
+                    this.loading = false
+                }
+            })
+        }
+    },
+    mounted() {
+        this.getCode()
     }
 }
 </script>
