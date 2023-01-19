@@ -94,7 +94,7 @@ export default {
                             this.$router.replace('/home')
                         } else {
                             // 登录失败
-
+                            this.loading = false
                         }
                     })
                 } else {
