@@ -11,7 +11,7 @@
         <div class="logo">Exchange</div>
         <div class="header-right">
             <div class="header-user-con">
-                <el-dropdown class="user-name" trigger="click">
+                <el-dropdown @command="handleCommand" class="user-name" trigger="click">
                 <span class="el-dropdown-link">
                   {{ username }}
                   <el-icon class="el-icon--right">
@@ -20,7 +20,7 @@
                 </span>
                     <template #dropdown>
                         <el-dropdown-menu>
-                            <el-dropdown-item>退出登录</el-dropdown-item>
+                            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
                         </el-dropdown-menu>
                     </template>
                 </el-dropdown>
@@ -30,11 +30,20 @@
 </template>
 
 <script>
+import {getRequest} from "@/api/axiosCommon";
+import router from "@/router";
+
 export default {
     name: "Header",
+    computed: {
+        username() {
+            let acc = sessionStorage.getItem("uid")
+            console.log(sessionStorage.getItem("uid"))
+            return acc ? acc : "guest"
+        }
+    },
     data() {
         return {
-            username: 'guest',
             collapse: true
         }
     },
@@ -42,6 +51,17 @@ export default {
         collapseChange() {
             this.collapse = !this.collapse
             this.$bus.emit('collapse', this.collapse)
+        },
+        handleCommand(command) {
+            if (command === "logout") {
+                getRequest("/login/logout").then(resp => {
+                    if (resp) {
+                        sessionStorage.removeItem("uid")
+                        sessionStorage.removeItem("token")
+                        router.replace("/")
+                    }
+                })
+            }
         }
     }
 }

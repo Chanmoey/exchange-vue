@@ -3,6 +3,9 @@ import {ElMessage} from 'element-plus'
 import router from "@/router"
 
 axios.interceptors.response.use(success => {
+    if (success.headers.get("Authorization")) {
+        sessionStorage.setItem("token", success.headers.get("Authorization"))
+    }
     // http响应码为200来到这，但是200不代表业务处理成功
     if (success.status && success.status === 200 && success.data.code !== 0) {
         ElMessage.error({message: success.data.message})
@@ -10,6 +13,10 @@ axios.interceptors.response.use(success => {
     }
     return success.data
 }, error => {
+    if (error.headers.get("Authorization")) {
+        sessionStorage.setItem("token", error.headers.get("Authorization"))
+    }
+
     if (error.response.status === 504 || error.response.status === 404) {
         ElMessage.error({message: "找不到服务器资源"})
     } else if (error.response.status === 403) {
@@ -42,7 +49,7 @@ export const postKeyValueRequest = (url, params) => {
         }],
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            'token': sessionStorage.getItem('token')
+            'Authorization': sessionStorage.getItem('token')
         }
     });
 }
@@ -53,7 +60,7 @@ export const postRequest = (url, params) => {
         url: `${base}${url}`,
         data: params,
         headers: {
-            'token': sessionStorage.getItem('token')
+            'Authorization': sessionStorage.getItem('token')
         }
     })
 }
@@ -64,7 +71,7 @@ export const putRequest = (url, params) => {
         url: `${base}${url}`,
         data: params,
         headers: {
-            'token': sessionStorage.getItem('token')
+            'Authorization': sessionStorage.getItem('token')
         }
     })
 }
@@ -75,7 +82,7 @@ export const getRequest = (url, params) => {
         url: `${base}${url}`,
         data: params,
         headers: {
-            'token': sessionStorage.getItem('token')
+            'Authorization': sessionStorage.getItem('token')
         }
     })
 }
@@ -86,7 +93,7 @@ export const deleteRequest = (url, params) => {
         url: `${base}${url}`,
         data: params,
         headers: {
-            'token': sessionStorage.getItem('token')
+            'Authorization': sessionStorage.getItem('token')
         }
     })
 }

@@ -49,8 +49,8 @@ export default {
 
             // 提交表单
             ruleFrom: {
-                uid: null,
-                password: null,
+                uid: 1000000000,
+                password: 123,
                 captcha: null,
                 captchaId: null,
             },
@@ -74,10 +74,8 @@ export default {
         getCode() {
             getRequest("/login/captcha").then(resp => {
                 if (resp) {
-                    console.log(resp)
                     this.ruleFrom.captchaId = resp.data.id
                     this.codeImg = resp.data.image
-                    console.log(this.codeImg)
                 }
             })
         },
@@ -92,6 +90,7 @@ export default {
                             this.$message.success("登录成功")
                             sessionStorage.setItem("uid", resp.data.uid)
                             sessionStorage.setItem("token", resp.data.token)
+                            console.log(sessionStorage.getItem('token'))
                             this.$router.replace('/home')
                         }
                     })
