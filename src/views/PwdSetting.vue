@@ -21,7 +21,7 @@
                 <el-form-item label="确认密码" label-width="80px">
                     <el-input v-model="from.newPasswordCfm" type="password"></el-input>
                 </el-form-item>
-                <el-button style="float: right" type="primary">确认修改</el-button>
+                <el-button @click="changePassword" style="float: right" type="primary">确认修改</el-button>
             </el-form>
 
         </el-card>
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import {postRequest} from "@/api/axiosCommon";
+import router from "@/router";
+
 export default {
     name: "PwdSetting",
     data() {
@@ -38,6 +41,31 @@ export default {
                 newPassword: '',
                 newPasswordCfm: ''
             }
+        }
+    },
+    methods: {
+        changePassword() {
+            if (this.from.newPassword.length < 3 && this.from.newPassword !== this.from.newPasswordCfm) {
+                this.$message.error("两次密码输入不一致，请重新输入")
+                return
+            }
+
+            if (this.from.oldPassword === this.from.newPassword) {
+                this.$message.error("新密码不能和旧密码一致")
+                return
+            }
+
+            postRequest("/login/change-password", {
+                oldPassword: this.from.oldPassword,
+                newPassword: this.from.newPassword
+            }).then(resp => {
+                if (resp) {
+                    this.$message.success("密码已更新，请重新登录")
+                    sessionStorage.removeItem("uid")
+                    sessionStorage.removeItem("token")
+                    router.replace("/")
+                }
+            })
         }
     }
 }
