@@ -92,6 +92,9 @@ export default {
                             sessionStorage.setItem("token", resp.data.token)
                             console.log(sessionStorage.getItem('token'))
                             this.$router.replace('/home')
+                        } else {
+                            // 登录失败
+
                         }
                     })
                 } else {
