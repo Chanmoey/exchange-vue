@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import {getRequest} from "@/api/axiosCommon";
+
 export default {
     name: "CodeInput",
     data() {
@@ -15,7 +17,17 @@ export default {
     },
     methods: {
         querySearchAsync(queryString, callback) {
-
+            let list = []
+            getRequest("/api/stock?key=" + queryString).then(resp => {
+                if (resp) {
+                    let resData = resp.data
+                    for (let i of resData) {
+                        i.value = ("000000" + i.code).slice(-6) + "--" + i.name
+                    }
+                    list = resData
+                    callback(list)
+                }
+            })
         },
         updateInput(item) {
             this.state = ('000000' + item.code).slice(-6)

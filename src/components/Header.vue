@@ -38,7 +38,6 @@ export default {
     computed: {
         username() {
             let acc = sessionStorage.getItem("uid")
-            console.log(sessionStorage.getItem("uid"))
             return acc ? acc : "guest"
         }
     },

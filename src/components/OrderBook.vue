@@ -3,7 +3,7 @@
     <el-form label-width="80px">
         <!-- 行情时间-->
         <el-form-item>
-            <h4 style="color:#909399; width: 20%; margin-left: 40%;">
+            <h4 style="color:#909399">
                 行情时间:{{ quotesTime }}
             </h4>
         </el-form-item>

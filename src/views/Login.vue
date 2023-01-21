@@ -41,6 +41,7 @@
 <script>
 
 import {getRequest, postRequest} from "@/api/axiosCommon";
+import {queryBalance, queryOrder, queryPosition, queryTrade} from "@/api/exchangeApi";
 
 export default {
     name: "Login",
@@ -90,8 +91,16 @@ export default {
                             this.$message.success("登录成功")
                             sessionStorage.setItem("uid", resp.data.uid)
                             sessionStorage.setItem("token", resp.data.token)
-                            console.log(sessionStorage.getItem('token'))
-                            this.$router.replace('/home')
+
+                            setTimeout(() => {
+                                this.loading = false
+                                this.$router.replace('/home')
+                                // 提前查询资金相关的信息
+                                queryBalance()
+                                queryOrder()
+                                queryPosition()
+                                queryTrade()
+                            }, 1000)
                         } else {
                             // 登录失败
                             this.loading = false
