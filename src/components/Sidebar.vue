@@ -1,9 +1,9 @@
 <template>
     <div class="sidebar">
         <el-menu class="sidebar-el-menu"
-                 background-color="#324157"
-                 text-color="#bfcbd9"
-                 active-text-color="#20a0ff"
+                 background-color="#000000"
+                 text-color="#C0C4CC"
+                 active-text-color="#409EFF"
                  unique-opened
                  router
                  :collapse="collapse"
