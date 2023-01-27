@@ -15,6 +15,7 @@
     "vue": "^3.2.13",
     "vue-bus": "^1.2.1",
     "vue-router": "^4.0.3",
+    "vue-vertx3-eventbus-client": "^3.6.0",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

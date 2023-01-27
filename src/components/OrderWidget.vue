@@ -97,7 +97,7 @@ export default {
         sendOrder() {
             let order = {
                 type: constants.NEW_ORDER,
-                timestamp: new Date().getDate(),
+                timestamp: new Date().getTime(),
                 code: this.code,
                 direction: this.direction,
                 price: this.price * constants.MULTI_FACTOR,
