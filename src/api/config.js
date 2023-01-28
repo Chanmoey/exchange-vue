@@ -1,6 +1,6 @@
 export const config = {
     real_ws_remote: {
-        host: "localhost",
+        host: "127.0.0.1",
         port: 8501,
         path: "/eventbus/"
     }

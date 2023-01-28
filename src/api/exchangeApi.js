@@ -1,6 +1,6 @@
 // 资金相关的Api接口
 
-import {getRequest} from "@/api/axiosCommon";
+import {getRequest, postRequest} from "@/api/axiosCommon";
 import store from "@/store";
 
 export const queryBalance = () => {

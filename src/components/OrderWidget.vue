@@ -50,6 +50,7 @@
 import CodeInput from "@/components/CodeInput.vue";
 import {postRequest} from "@/api/axiosCommon";
 import {constants} from "@/api/constants";
+import {queryBalance, queryOrder, queryPosition} from "@/api/exchangeApi";
 
 export default {
     name: "OrderWidget",
@@ -107,6 +108,9 @@ export default {
             postRequest("/api/send-order", order).then(resp => {
                 if (resp) {
                     this.$message.success("委托已送往交易所")
+                    queryOrder()
+                    queryBalance()
+                    queryPosition()
                 } else {
                     this.$message.error("委托失败")
                 }

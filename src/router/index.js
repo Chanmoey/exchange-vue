@@ -7,6 +7,7 @@ import Transfer from "@/views/Transfer.vue";
 import OrderQuery from "@/views/OrderQuery.vue";
 import HisOrderQuery from "@/views/HisOrderQuery.vue";
 import Buy from "@/views/buy.vue";
+import Sell from "@/views/Sell.vue";
 
 const routes = [
     {
@@ -44,6 +45,11 @@ const routes = [
                 path: '/buy',
                 name: 'buy',
                 component: Buy,
+            },
+            {
+                path: '/sell',
+                name: 'sell',
+                component: Sell,
             },
         ]
     },

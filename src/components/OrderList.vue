@@ -23,12 +23,25 @@
             <el-table-column align="center" prop="direction" label="方向"/>
 
             <el-table-column align="center" prop="status" label="状态"/>
+
+            <el-table-column width="85">
+                <template scope="scope">
+                    <el-button v-show="isCancelBtnShow(scope.row.status)"
+                               type="primary"
+                               @click="handleCancelOrder(scope.$index, scope.row)"
+                    >
+                    </el-button>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="pagination">
             <el-button size="small" round type="primary"
                        style="margin-left: 5px; float: right"
                        @click="">
-                <el-icon><Refresh /></el-icon>刷新
+                <el-icon>
+                    <Refresh/>
+                </el-icon>
+                刷新
             </el-button>
 
             <el-config-provider :locale="zhCn">
@@ -49,6 +62,9 @@
 
 <script>
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import {constants} from "@/api/constants";
+import {codeFormat} from "@/api/formatter";
+import {postRequest} from "@/api/axiosCommon";
 
 export default {
     name: "OrderList",
@@ -114,6 +130,35 @@ export default {
                     }
                 )
             }
+        },
+        isCancelBtnShow(status) {
+            // 已报和部分成交才可以撤销, 3和5后续将其定义成常量
+            if (status === 3 || status === 5) {
+                return true
+            } else {
+                return false
+            }
+        },
+        handleCancelOrder(index, row) {
+            let message = (row.direction === constants.BUY ? "买入" : "卖出")
+                + "   " + row.name + "(" + codeFormat(row.code) + ")" + row.count + "股"
+
+            this.$confirm(message, "撤单", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(() => {
+                postRequest("/api/send-order", {
+                    order: row.id,
+                    code: row.code
+                }).then(resp => {
+                    if (resp) {
+                        this.$message.success("撤单成功")
+                    } else {
+                        this.$message.error("撤单失败")
+                    }
+                })
+            })
         }
     }
 }
